@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFBEA">
+
+    <!-- Map View -->
+    <org.osmdroid.views.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Location Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_my_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:src="@android:drawable/ic_menu_mylocation"
+        app:backgroundTint="#FFC400"
+        app:tint="@android:color/white" />
+
+    <!-- Directions Buttons -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btn_get_directions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Get Directions"
+            android:backgroundTint="#4CAF50"
+            android:textColor="@android:color/white"
+            android:enabled="false"
+            android:padding="12dp"
+            android:elevation="4dp" />
+
+        <Button
+            android:id="@+id/btn_clear_route"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear Route"
+            android:backgroundTint="#F44336"
+            android:textColor="@android:color/white"
+            android:enabled="false"
+            android:padding="12dp"
+            android:layout_marginTop="8dp"
+            android:elevation="4dp" />
+
+    </LinearLayout>
+
+    <!-- Info Panel -->
+    <LinearLayout
+        android:id="@+id/info_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:elevation="8dp"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:visibility="gone"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:id="@+id/location_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tap on map to select destination"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#333" />
+
+        <TextView
+            android:id="@+id/address_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="12sp"
+            android:textColor="#666"
+            android:layout_marginTop="4dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Solar Panel 300W",
+    "shortDesc": "High efficiency",
+    "longDesc": "This 300W solar panel is perfect for home use, easy to install, and weather resistant.",
+    "image": "panel1",
+    "price": "250,000 DZD"
+  },
+  {
+    "name": "Battery Pack",
+    "shortDesc": "Long life",
+    "longDesc": "Lithium battery with 10-year lifespan, suitable for storing solar energy.",
+    "image": "battery",
+    "price": "18,000 DZD"
+  },
+  {
+    "name": "Inverter",
+    "shortDesc": "Smart control",
+    "longDesc": "Converts DC to AC, compatible with all standard panels.",
+    "image": "inverter",
+    "price": "20,000 DZD"
+  }
+]
