@@ -1,6 +1,7 @@
 package first.Project;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
@@ -12,7 +13,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -51,12 +51,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         toggle.getDrawerArrowDrawable().setColor(Color.BLACK);
 
-        // Set Home as default fragment
+        // CHECK INTENT FLAG: Show Dashboard if coming from login
+       // Intent intent = getIntent();
+       // boolean showDashboardFirst = intent.getBooleanExtra("SHOW_DASHBOARD_FIRST", false);
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content_frame, new HomeFragment())
+                    .replace(R.id.content_frame, new DashboardFragment())
                     .commit();
-            navigationView.setCheckedItem(R.id.nav_home);
+            navigationView.setCheckedItem(R.id.nav_dashboard);
         }
     }
 
@@ -87,10 +90,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         Fragment fragment = null;
 
-        if (id == R.id.nav_home) {
+        if (id == R.id.nav_dashboard) {
+            // NEW: Go to DashboardFragment
+            fragment = new DashboardFragment();
+        } else if (id == R.id.nav_home) {
+            // EXISTING: Go to HomeFragment (Map/Products)
             fragment = new HomeFragment();
         } else if (id == R.id.nav_logout) {
-            finish();
+            // Go back to LoginActivity instead of just finishing
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+
+            // Clear the activity stack so user can't go back with back button
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+            startActivity(intent);
+            finish(); // Optional - finishes current activity
             return true;
         }
 

@@ -31,8 +31,9 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            // No backend yet — just open main page
+            // Send flag to show Dashboard first
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            intent.putExtra("SHOW_DASHBOARD_FIRST", true);
             startActivity(intent);
             finish();
         });
