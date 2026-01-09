@@ -53,9 +53,9 @@ import okhttp3.Response;
 public class ProductMapFragment extends Fragment {
 
     // UI Components
-    private MapView mapView;
-    private IMapController mapController;
-    private MyLocationNewOverlay myLocationOverlay;
+    MapView mapView;
+    IMapController mapController;
+    MyLocationNewOverlay myLocationOverlay;
     private TextView locationInfo, addressInfo;
     private LinearLayout infoPanel;
     private FloatingActionButton fabMyLocation;
@@ -303,7 +303,7 @@ public class ProductMapFragment extends Fragment {
 
     // ==================== MARKER METHODS ====================
 
-    private void setSelectedLocation(GeoPoint location) {
+    void setSelectedLocation(GeoPoint location) {
         removePreviousMarker();
         selectedLocation = location;
         createNewMarker(location);
@@ -375,7 +375,7 @@ public class ProductMapFragment extends Fragment {
         });
     }
 
-    private void getDirections() {
+    void getDirections() {
         if (myLocationOverlay == null || myLocationOverlay.getLastFix() == null) {
             showToast("📍 Need your current location first");
             return;
@@ -723,7 +723,7 @@ public class ProductMapFragment extends Fragment {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-    private void cleanupResources() {
+    void cleanupResources() {
         if (myLocationOverlay != null) {
             myLocationOverlay.disableMyLocation();
             if (mapView != null) {

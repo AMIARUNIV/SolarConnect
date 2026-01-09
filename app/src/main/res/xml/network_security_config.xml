@@ -10,5 +10,6 @@
         <domain includeSubdomains="true">otile2.mqcdn.com</domain>
         <domain includeSubdomains="true">otile3.mqcdn.com</domain>
         <domain includeSubdomains="true">otile4.mqcdn.com</domain>
+        <domain includeSubdomains="true">10.49.156.81</domain>
     </domain-config>
 </network-security-config>

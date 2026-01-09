@@ -26,20 +26,31 @@
             android:textColor="#333"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:gravity="center"
+            android:gravity="center" />
 
-            />
-
+        <!-- First Name -->
         <EditText
-            android:id="@+id/nameInput"
+            android:id="@+id/firstNameInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:background="@android:drawable/edit_text"
-            android:hint="Full Name"
+            android:hint="First Name"
             android:inputType="textPersonName"
             android:padding="12dp" />
 
+        <!-- Last Name -->
+        <EditText
+            android:id="@+id/lastNameInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@android:drawable/edit_text"
+            android:hint="Last Name"
+            android:inputType="textPersonName"
+            android:padding="12dp" />
+
+        <!-- Email -->
         <EditText
             android:id="@+id/emailInput"
             android:layout_width="match_parent"
@@ -50,6 +61,7 @@
             android:inputType="textEmailAddress"
             android:padding="12dp" />
 
+        <!-- Password -->
         <EditText
             android:id="@+id/passwordInput"
             android:layout_width="match_parent"
@@ -60,6 +72,7 @@
             android:inputType="textPassword"
             android:padding="12dp" />
 
+        <!-- Phone -->
         <EditText
             android:id="@+id/phoneInput"
             android:layout_width="match_parent"
@@ -70,6 +83,18 @@
             android:inputType="phone"
             android:padding="12dp" />
 
+        <!-- Birth Date (Optional) -->
+        <EditText
+            android:id="@+id/birthDateInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@android:drawable/edit_text"
+            android:hint="Birth Date (YYYY-MM-DD) - Optional"
+            android:inputType="date"
+            android:padding="12dp" />
+
+        <!-- Address -->
         <EditText
             android:id="@+id/addressInput"
             android:layout_width="match_parent"
@@ -80,14 +105,13 @@
             android:inputType="textPostalAddress"
             android:padding="12dp" />
 
-
+        <!-- Role Selection -->
         <RadioGroup
             android:id="@+id/roleGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginTop="16dp"
             android:layout_marginBottom="24dp">
 
             <RadioButton
@@ -109,6 +133,7 @@
                 android:layout_marginStart="32dp" />
         </RadioGroup>
 
+        <!-- Register Button -->
         <Button
             android:id="@+id/registerButton"
             android:layout_width="match_parent"
@@ -117,6 +142,7 @@
             android:text="Register"
             android:textColor="#000" />
 
+        <!-- Login Link -->
         <TextView
             android:id="@+id/loginText"
             android:layout_width="wrap_content"
@@ -124,8 +150,6 @@
             android:layout_marginTop="24dp"
             android:text="Already have an account? Log in"
             android:textColor="#007BFF"
-            android:fontFamily="serif-monospace"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
     </LinearLayout>
 </ScrollView>

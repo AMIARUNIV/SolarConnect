@@ -1,17 +1,25 @@
 package first.Project;
 
-import android.app.AlertDialog;
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.fragment.app.Fragment;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import first.Project.models.ApiResponse;
+import first.Project.Product;
+import first.Project.network.ApiService;
+import first.Project.network.RetrofitClient;
+import first.Project.utils.CartManager;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,60 +27,100 @@ public class ProductListFragment extends Fragment {
 
     private ListView productList;
     private List<Product> products;
+    private ProductAdapter adapter;
+    private ProgressBar progressBar;
+    private ImageView cartIcon;
+    private TextView cartBadge;
+    private CartManager cartManager;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_products_list, container, false);
 
         productList = view.findViewById(R.id.productList);
-        products = loadProductsFromJson();
+        progressBar = view.findViewById(R.id.progressBar);
+        cartIcon = view.findViewById(R.id.cartIcon);
+        cartBadge = view.findViewById(R.id.cartBadge);
 
-        ProductAdapter adapter = new ProductAdapter(getActivity(), products);
+        products = new ArrayList<>();
+        cartManager = CartManager.getInstance(getActivity());
+
+        adapter = new ProductAdapter(getActivity(), products);
         productList.setAdapter(adapter);
 
-        productList.setOnItemClickListener((parent, view1, position, id) -> {
-            Product p = products.get(position);
-
-            // AlertDialog (boîte de dialogue)
-            new AlertDialog.Builder(getActivity())
-                    .setTitle(p.getName())
-                    .setMessage(p.getLongDesc() + "\n\nPrice: " + p.getPrice())
-                    .setPositiveButton("OK", null)
-                    .show();
+        // Set up cart icon click
+        cartIcon.setOnClickListener(v -> {
+            openCart();
         });
+
+        // Update cart badge
+        updateCartBadge();
+
+        // Fetch products from API
+        fetchProductsFromAPI();
 
         return view;
     }
 
-    private List<Product> loadProductsFromJson() {
-        List<Product> productList = new ArrayList<>();
-        try {
-            InputStream inputStream = getResources().openRawResource(R.raw.products);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            StringBuilder jsonBuilder = new StringBuilder();
-            String line;
+    private void fetchProductsFromAPI() {
+        progressBar.setVisibility(View.VISIBLE);
 
-            while ((line = reader.readLine()) != null) {
-                jsonBuilder.append(line);
+        ApiService apiService = RetrofitClient.getApiService();
+        Call<ApiResponse<List<Product>>> call = apiService.getProducts();
+
+        call.enqueue(new Callback<ApiResponse<List<Product>>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<List<Product>>> call, Response<ApiResponse<List<Product>>> response) {
+                progressBar.setVisibility(View.GONE);
+
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<List<Product>> apiResponse = response.body();
+
+                    if (apiResponse.isSuccess()) {
+                        products.clear();
+                        products.addAll(apiResponse.getData());
+                        adapter.notifyDataSetChanged();
+
+                        if (products.isEmpty()) {
+                            Toast.makeText(getActivity(), "No products available", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "Failed to fetch products", Toast.LENGTH_SHORT).show();
+                }
             }
 
-            JSONArray jsonArray = new JSONArray(jsonBuilder.toString());
-
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject obj = jsonArray.getJSONObject(i);
-                String name = obj.getString("name");
-                String shortDesc = obj.getString("shortDesc");
-                String longDesc = obj.getString("longDesc");
-                String price = obj.getString("price");
-                String imageName = obj.getString("image");
-
-                int imageResId = getResources().getIdentifier(imageName, "drawable", getActivity().getPackageName());
-                productList.add(new Product(name, shortDesc, longDesc, imageResId, price));
+            @Override
+            public void onFailure(Call<ApiResponse<List<Product>>> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getActivity(), "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
             }
+        });
+    }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void openCart() {
+        Intent intent = new Intent(getActivity(), CartActivity.class);
+        startActivity(intent);
+    }
+
+    private void updateCartBadge() {
+        int itemCount = cartManager.getItemCount();
+        if (itemCount > 0) {
+            cartBadge.setText(String.valueOf(itemCount));
+            cartBadge.setVisibility(View.VISIBLE);
+        } else {
+            cartBadge.setVisibility(View.GONE);
         }
-        return productList;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Update cart badge when returning from CartActivity
+        updateCartBadge();
     }
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="firstNameInput" type="id" />
+    <item name="lastNameInput" type="id" />
+    <item name="birthDateInput" type="id" />
+    <item name="nav_tasks" type="id" />
+    <item name="nav_map" type="id" />
+    <item name="nav_profile" type="id" />
+    <item name="progressBar" type="id" />
+    <item name="clearCartButton" type="id" />
+    <item name="checkoutButton" type="id" />
+    <item name="nav_header_title" type="id" />
+    <item name="nav_header_subtitle" type="id" />
+</resources>
